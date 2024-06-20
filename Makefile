@@ -21,3 +21,9 @@ gcam:
 	git add .
 	git commit  --amend --no-edit
 	git push -f
+
+start_container:
+	python ./manage.py migrate
+	python ./manage.py initadmin
+	python ./manage.py loadsql
+	python ./manage.py runserver 0.0.0.0:8080

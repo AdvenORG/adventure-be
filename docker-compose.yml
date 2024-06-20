@@ -1,0 +1,50 @@
+version: '3.4'
+
+services:
+
+  ftp:
+    image: fauria/vsftpd
+    ports:
+      - "20:20"
+      - "21:21"
+      - "21100-21110:21100-21110"
+    environment:
+      FTP_USER: "ftp"
+      FTP_PASS: "admin"
+      PASV_MIN_PORT: "21100"
+      PASV_MAX_PORT: "21110"
+    
+    mem_limit: 2g
+    volumes:
+      - ./ftp:/Users/mac/Desktop/adventure/images/:rw
+      - ./logs/vsftpd/:/Users/mac/Desktop/adventure/images/:rw
+
+
+  adventure_be_db:
+    image: postgres
+    container_name: adventure_be_db_container
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: store
+    ports:
+      - 14432:5432
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
+
+  adventure_be_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: adventure_be_server_container
+    volumes:
+      - .:/server/
+    env_file:
+      - .env.local
+    ports:
+      - 9000:8080
+    depends_on:
+      - ftp
+      - adventure_be_db
+volumes:
+  postgres_data:

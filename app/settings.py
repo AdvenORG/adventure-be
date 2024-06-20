@@ -18,6 +18,9 @@ from dotenv import load_dotenv
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), ".env.local"))
 
 
+ADMINS = [
+    ("admin", "hoangduc.uit.dev@example.com"),
+]
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -53,7 +56,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "corsheaders",
+    "app",
     "store",
     "like",
     "images",
@@ -70,7 +73,8 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -78,10 +82,13 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
+    # allauth
     "allauth.account.middleware.AccountMiddleware",
+]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "http://0.0.0.0:8080",
 ]
 
 INTERNAL_IPS = [
@@ -101,7 +108,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                # `allauth` needs this from django
                 "django.template.context_processors.request",
             ],
         },
@@ -180,16 +186,27 @@ REST_FRAMEWORK = {
 }
 
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-]
-
-
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
+
+# Keycloak client environment values
+KEYCLOAK_HOST = os.getenv("KEYCLOAK_HOST")
+KEYCLOAK_PORT = os.getenv("KEYCLOAK_PORT")
+KEYCLOAK_SERVER_CONFIGURATION_URL = os.getenv("KEYCLOAK_SERVER_CONFIGURATION_URL")
+OIDC_CONNECT_ENDPOINT = os.getenv("OIDC_CONNECT_ENDPOINT")
+
+
+# Keycloak client settings
+KEYCLOAK_CLIENT_ID = os.getenv("KEYCLOAK_CLIENT_ID")
+KEYCLOAK_CLIENT_SECRET = os.getenv("KEYCLOAK_CLIENT_SECRET")
+KEYCLOAK_REDIRECT_URI = os.getenv("KEYCLOAK_REDIRECT_URI")
+
+KEYCLOAK_SERVER_URL = (
+    f"{KEYCLOAK_HOST}:{KEYCLOAK_PORT}/{KEYCLOAK_SERVER_CONFIGURATION_URL}"
+)
+KEYCLOAK_BASE_URL = f"{KEYCLOAK_HOST}:{KEYCLOAK_PORT}/{OIDC_CONNECT_ENDPOINT}"
 
 SOCIALACCOUNT_PROVIDERS = {
     "openid_connect": {
@@ -197,10 +214,10 @@ SOCIALACCOUNT_PROVIDERS = {
             {
                 "provider_id": "keycloak",
                 "name": "Keycloak",
-                "client_id": os.getenv("KEYCLOAK_CLIENT_ID"),
-                "secret": os.getenv("KEYCLOAK_CLIENT_SECRET"),
+                "client_id": KEYCLOAK_CLIENT_ID,
+                "secret": KEYCLOAK_CLIENT_SECRET,
                 "settings": {
-                    "server_url": os.getenv("KEYCLOAK_SERVER_URL"),
+                    "server_url": KEYCLOAK_SERVER_URL,
                 },
             }
         ]
@@ -212,8 +229,7 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_ONLY = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
-# Keycloak client settings
-KEYCLOAK_CLIENT_ID = os.getenv("KEYCLOAK_CLIENT_ID")
-KEYCLOAK_CLIENT_SECRET = os.getenv("KEYCLOAK_CLIENT_SECRET")
-KEYCLOAK_REDIRECT_URI = os.getenv("KEYCLOAK_REDIRECT_URI")
-KEYCLOAK_BASE_URL = os.getenv("KEYCLOAK_BASE_URL")
+
+SOCIALACCOUNT_STORE_TOKENS = True
+LOGIN_REDIRECT_URL = "/accounts/token/"
+# ACCOUNT_ADAPTER = "app.adapters.MyAccountAdapter"

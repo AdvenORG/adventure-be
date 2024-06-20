@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  adventure_be_db:
+    image: postgres
+    container_name: adventure_be_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: store
+    ports:
+      - 5432:5432
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
+
+  adventure_be_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: adventure_be_server
+    env_file:
+      - .env.local
+    ports:
+      - 8080:8080
+    depends_on:
+      - adventure_be_db
+volumes:
+  postgres_data:

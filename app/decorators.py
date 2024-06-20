@@ -1,36 +1,26 @@
-# decorators.py
+# import requests
+# from django.http import JsonResponse, HttpResponseForbidden, HttpResponseBadRequest
+# from functools import wraps
+# from django.conf import settings
 
-import requests
-from django.conf import settings
-from django.http import JsonResponse
+# def keycloak_protected(view_func):
+#     @wraps(view_func)
+#     def _wrapped_view(request, *args, **kwargs):
+#         # Retrieve the access token from the headers
+#         access_token = request.headers.get("Authorization")
 
+#         if not access_token:
+#             return HttpResponseForbidden("Access token is missing or expired")
 
-def token_auth_required(view_func):
-    def wrapped_view(request, *args, **kwargs):
-        # Retrieve the access token from the request headers
-        access_token = (
-            request.headers.get("Authorization", "").split("Bearer ")[-1].strip()
-        )
+#         # Set up the headers with the access token
+#         user_info_url = f"{settings.KEYCLOAK_BASE_URL}/userinfo"
+#         headers = {"Authorization": f"Bearer {access_token}"}
+#         user_info_response = requests.get(user_info_url, headers=headers)
 
-        if not access_token:
-            return JsonResponse(
-                {"error": "Authorization header missing or invalid"}, status=403
-            )
+#         if user_info_response.status_code == 200:
+#             request.user_info = user_info_response.json()
+#             return view_func(request, *args, **kwargs)
+#         else:
+#             return HttpResponseBadRequest("Failed to fetch data from external API")
 
-        # Validate the access token (optional, you may need to adjust based on your setup)
-        user_info_url = f"{settings.KEYCLOAK_BASE_URL}/userinfo"
-        headers = {"Authorization": f"Bearer {access_token}"}
-
-        response = requests.get(user_info_url, headers=headers)
-
-        if response.status_code != 200:
-            return JsonResponse({"error": "Invalid access token"}, status=403)
-
-        # Add token info to request object if needed
-        user_info = response.json()
-        request.session["user_info"] = user_info
- 
-        # Call the view function
-        return view_func(request, *args, **kwargs)
-
-    return wrapped_view
+#     return _wrapped_view

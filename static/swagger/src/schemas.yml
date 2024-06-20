@@ -1,0 +1,118 @@
+# Schemas
+
+DateTime:
+  type: string
+  format: date-time
+  example: "2022-01-01T00:00:00.000Z"
+  readOnly: true
+
+
+TokenData:
+  type: object
+  properties:
+    access_token:
+      type: string
+      maxLength: 255
+      example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0I"
+    refresh_token:
+      type: string
+      maxLength: 255
+      example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0I"
+  required:
+    - access_token
+    - refresh_token
+
+Product:
+  type: object
+  properties:
+    SKU:
+      type: string
+      maxLength: 255
+    slug:
+      type: string
+      pattern: '^[-a-zA-Z0-9_]+$'
+    description:
+      type: string
+      nullable: true
+    price:
+      type: number
+      multipleOf: 0.01
+      maximum: 10000
+      minimum: -10000
+    images:
+      type: string
+      readOnly: true
+  required:
+    - SKU
+    - slug
+    - description
+    - price
+
+
+Category:
+  type: object
+  properties:
+    name:
+      type: string
+      maxLength: 255
+    category_id:
+      type: integer
+      format: int64
+  required:
+    - name
+    - category_id
+
+# Request Schemas
+
+LoginRequest:
+  type: object
+  properties:
+    email:
+      type: string
+      format: email
+      maxLength: 100
+    password:
+      type: string
+      maxLength: 100
+  required:
+    - email
+    - password
+
+
+
+# Response Schemas
+
+Response:
+  type: object
+  properties:
+    code:
+      type: integer
+    message:
+      type: string
+      maxLength: 255
+  required:
+    - code
+    - message
+
+
+DataResponse:
+  allOf:
+    - $ref: "#/Response"
+    - type: object
+      properties:
+        data:
+          type: string
+          readOnly: true
+      required:
+        - data
+
+
+TokenResponse:
+  allOf:
+    - $ref: "#/DataResponse"
+    - type: object
+      properties:
+        data:
+          $ref: "#/TokenData"
+
+

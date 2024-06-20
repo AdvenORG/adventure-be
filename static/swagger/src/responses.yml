@@ -1,0 +1,55 @@
+"200":
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas.yml#/Response"
+      examples:
+        Success:
+          summary: 🟢 Successful
+          value:
+            code: 200
+            message: Success
+
+"400":
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas.yml#/Response"
+      examples:
+        BAD_REQUEST:
+          $ref: "./examples.yml#/BAD_REQUEST"
+
+"401":
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas.yml#/Response"
+      examples:
+        UNAUTHORIZED:
+          $ref: "./examples.yml#/UNAUTHORIZED"
+
+"422":
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas.yml#/Response"
+      examples:
+        UnprocessableEntity:
+          value:
+            code: 422000
+            message: Unprocessable entity
+            errors:
+              field1:
+                - field1 is required
+              field2:
+                - field2 is required
+          summary: Unprocessable Entity
+
+"500":
+  content:
+    application/json:
+      schema:
+        $ref: "./schemas.yml#/Response"
+      examples:
+        INTERNAL_SERVER_ERROR:
+          $ref: "./examples.yml#/INTERNAL_SERVER_ERROR"

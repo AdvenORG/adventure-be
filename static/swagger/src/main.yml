@@ -1,0 +1,361 @@
+openapi: 3.1.0
+
+info:
+  title: E-Factory
+  version: 1.0.0
+  description: Swagger API for E-Factory
+
+servers: [
+  {
+    "url": "http://127.0.0.1:8000",
+    "description": "Local server"
+  },
+  {
+    "url": "https://staging.example.com",
+    "description": "Staging server"
+  }
+]
+
+paths:
+  /api/store/products/:
+    get:
+      operationId: listProducts
+      description: Get list of products
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "./schemas.yml#/DataResponse"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Product'
+
+              examples:
+                SuccessExample:
+                  $ref: "#/components/examples/SuccessExample"  # Reusing the example
+
+      tags:
+        - Product
+    post:
+      operationId: createProduct
+      description: Create a new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'  # Reference to the input schema for creating a product
+
+      responses:
+        '201':
+          description: Product created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'  # Reference to the response schema for a single product
+        examples:
+          SuccessExample:
+            $ref: '#/components/examples/SuccessExample'
+      '400':
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'  # Reference to the error schema                             
+      tags:
+        - Product
+  /api/store/products/{product_id}/:
+    get:
+      operationId: retrieveProduct
+      description: ""
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: A unique integer value identifying this product.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: No Product matches the given query.
+      tags:
+        - Product
+    put:
+      operationId: updateProduct
+      description: ""
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: A unique integer value identifying this product.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: No Product matches the given query.
+      tags:
+        - Product
+    patch:
+      operationId: partialUpdateProduct
+      description: ""
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: A unique integer value identifying this product.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: No Product matches the given query.
+      tags:
+        - Product
+    delete:
+      operationId: destroyProduct
+      description: ""
+      parameters:
+        - name: product_id
+          in: path
+          required: true
+          description: A unique integer value identifying this product.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ""
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: No Product matches the given query.
+      tags:
+        - Product
+  /api/store/categories/:
+    get:
+      operationId: listCategory
+      description: Get list of categories
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "./schemas.yml#/DataResponse"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Category'
+      tags:
+        - Category
+    post:
+      operationId: createCategory
+      description: Create a new category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '201':
+          description: Category created successfully
+      tags:
+        - Category
+
+
+  /api/store/categories/{category_id}/:
+    get:
+      operationId: retrieveCategory
+      description: Retrieve a specific category by ID
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          description: A unique integer value identifying this category.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+      tags:
+        - Category
+
+    delete:
+      operationId: deleteCategory
+      description: Delete a specific category by id
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          description: A unique integer value identifying this category.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "./responses.yml#/400"
+      tags:
+        - Category
+
+
+# Components        
+
+components:
+  schemas:
+    # Schemas
+    TokenData:
+      $ref: "./schemas.yml#/TokenData"
+    Product:
+      $ref: "./schemas.yml#/Product"
+    Category:
+      $ref: "./schemas.yml#/Category"
+
+    # Response Schemas
+    Response:
+      $ref: "./schemas.yml#/Response"
+    DataResponse:
+      $ref: "./schemas.yml#/DataResponse"
+    TokenResponse:
+      $ref: "./schemas.yml#/TokenResponse"
+
+    # Request Schemas      
+    LoginRequest:
+      $ref: "./schemas.yml#/LoginRequest"
+
+  parameters:
+    id:
+      $ref: "./parameters.yml#/id"
+
+  responses:
+    "200":
+      $ref: "./responses.yml#/200"
+    "400":
+      $ref: "./responses.yml#/400"
+    "401":
+      $ref: "./responses.yml#/401"
+    "422":
+      $ref: "./responses.yml#/422"
+    "500":
+      $ref: "./responses.yml#/500"
+
+  securitySchemes:
+    JWT Bearer Authentication:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  examples:
+
+    SuccessExample: 
+      value:
+        code: 200
+        message: Success 
+        data:
+          - SKU: "SKU-SKU-SKU"
+            slug: "5ZQowr7QAIiSJazMGloH4-lEOGmrbTIDfqy339GqD2PJ7p6AQYBbTQnX5i6Mk-mtXFt2wUaVn2u9fVtrwr"
+            description: "string"
+            price: -9999.98
+            images: "string"
+
+  

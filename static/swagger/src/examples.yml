@@ -1,0 +1,46 @@
+BAD_REQUEST:
+  summary: ❌ Bad Request
+  value:
+    code: 400
+    message: The request could not be understood by the server due to malformed syntax.
+
+UNAUTHORIZED:
+  summary: 🚫 Unauthorized
+  value:
+    code: 401
+    message: Authentication is required to access this resource.
+
+FORBIDDEN:
+  summary: ⛔ Forbidden
+  value:
+    code: 403
+    message: You are not permitted to access this resource.
+
+NOT_FOUND:
+  summary: 🚷 Not Found
+  value:
+    code: 404
+    message: The requested resource could not be found.
+
+INTERNAL_SERVER_ERROR:
+  summary: 🛑 Internal Server Error
+  value:
+    code: 500
+    message: An unexpected error occurred on the server.
+
+
+
+
+# PRODUCT
+
+GET_PRODUCTS_SUCCESS:
+  summary: 🟢 Successful
+  value:
+    code: 200
+    message: Success 
+    data:
+      - SKU: "SKU-SKU-SKU"
+        slug: "5ZQowr7QAIiSJazMGloH4-lEOGmrbTIDfqy339GqD2PJ7p6AQYBbTQnX5i6Mk-mtXFt2wUaVn2u9fVtrwr"
+        description: "string"
+        price: -9999.98
+        images: "string"

@@ -16,7 +16,7 @@ COPY . .
 RUN poetry install --no-interaction --no-ansi
 
 
-EXPOSE 8080
+EXPOSE 8000
 
 
 CMD  make start_container

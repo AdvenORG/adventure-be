@@ -45,6 +45,7 @@ def serve_ftp_image(request, content_type, file_name):
 
 
 def keycloak_callback(request):
+    print(request)
     auth_code = request.GET.get("code")
     if not auth_code:
         return HttpResponseBadRequest("Missing authorization code")

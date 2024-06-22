@@ -1,8 +1,6 @@
 FROM python:3.11.3
 
 
-WORKDIR /server
-
 RUN pip install poetry==1.8.1
 
 RUN poetry config virtualenvs.create false
@@ -16,7 +14,7 @@ COPY . .
 RUN poetry install --no-interaction --no-ansi
 
 
-EXPOSE 8000
+EXPOSE 8080
 
 
-CMD  make start_container
+CMD  make start

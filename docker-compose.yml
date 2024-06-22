@@ -1,7 +1,6 @@
 version: '3.4'
 
 services:
-
   adventure_be_db:
     image: postgres
     container_name: adventure_be_db_container
@@ -14,18 +13,16 @@ services:
     volumes:
       - ./init-scripts:/docker-entrypoint-initdb.d
 
-  # adventure_be_server:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: adventure_be_server_container
-  #   volumes:
-  #     - .:/server/
-  #   env_file:
-  #     - .env.local
-  #   ports:
-  #     - 8000:8000
-  #   depends_on:
-  #     - adventure_be_db
+  adventure_be_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: adventure_be_server_container
+    env_file:
+      - .env.local
+    ports:
+      - 8080:8080
+    depends_on:
+      - adventure_be_db
 volumes:
   postgres_data:

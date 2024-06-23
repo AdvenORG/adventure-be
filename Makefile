@@ -25,4 +25,4 @@ start:
 	python ./manage.py migrate
 	python ./manage.py initadmin
 	python ./manage.py loadsql
-	python ./manage.py runserver 0.0.0.0:8080
+	python ./manage.py runserver 0.0.0.0:9090

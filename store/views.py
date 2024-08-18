@@ -3,6 +3,7 @@ from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import exception_handler
 
+from app.custom_permission import KeycloakProtectedPermission
 from app_utils.serializers import CategorySerializer, ProductSerializer
 
 from .models import Category, Product
@@ -43,6 +44,7 @@ class ProductViewSet(
 ):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    # permission_classes = [KeycloakProtectedPermission]
 
     def list(self, request, *args, **kwargs):
         data = self.get_serializer(

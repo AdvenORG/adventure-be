@@ -5,16 +5,11 @@ info:
   version: 1.0.0
   description: Swagger API for E-Factory
 
-servers: [
-  {
-    "url": "http://127.0.0.1:8000",
-    "description": "Local server"
-  },
-  {
-    "url": "https://staging.example.com",
-    "description": "Staging server"
-  }
-]
+servers:
+  [
+    { "url": "http://127.0.0.1:8080", "description": "Local server" },
+    { "url": "https://staging.example.com", "description": "Staging server" },
+  ]
 
 paths:
   /api/store/products/:
@@ -22,7 +17,7 @@ paths:
       operationId: listProducts
       description: Get list of products
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
@@ -33,11 +28,11 @@ paths:
                       data:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Product'
+                          $ref: "#/components/schemas/Product"
 
               examples:
                 SuccessExample:
-                  $ref: "#/components/examples/SuccessExample"  # Reusing the example
+                  $ref: "#/components/examples/SuccessExample" # Reusing the example
 
       tags:
         - Product
@@ -49,24 +44,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'  # Reference to the input schema for creating a product
+              $ref: "#/components/schemas/Product" # Reference to the input schema for creating a product
 
       responses:
-        '201':
+        "201":
           description: Product created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'  # Reference to the response schema for a single product
+                $ref: "#/components/schemas/Product" # Reference to the response schema for a single product
         examples:
           SuccessExample:
-            $ref: '#/components/examples/SuccessExample'
-      '400':
+            $ref: "#/components/examples/SuccessExample"
+      "400":
         description: Bad request
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Error'  # Reference to the error schema                             
+              $ref: "#/components/schemas/Error" # Reference to the error schema
       tags:
         - Product
   /api/store/products/{product_id}/:
@@ -81,13 +76,13 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
-        '404':
+                $ref: "#/components/schemas/Product"
+        "404":
           description: Product not found
           content:
             application/json:
@@ -116,21 +111,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: "#/components/schemas/Product"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: "#/components/schemas/Product"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: "#/components/schemas/Product"
       responses:
-        '200':
+        "200":
           description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
-        '404':
+                $ref: "#/components/schemas/Product"
+        "404":
           description: Product not found
           content:
             application/json:
@@ -159,21 +154,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: "#/components/schemas/Product"
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: "#/components/schemas/Product"
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: "#/components/schemas/Product"
       responses:
-        '200':
+        "200":
           description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
-        '404':
+                $ref: "#/components/schemas/Product"
+        "404":
           description: Product not found
           content:
             application/json:
@@ -199,9 +194,9 @@ paths:
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: ""
-        '404':
+        "404":
           description: Product not found
           content:
             application/json:
@@ -221,7 +216,7 @@ paths:
       operationId: listCategory
       description: Get list of categories
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
@@ -232,7 +227,7 @@ paths:
                       data:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Category'
+                          $ref: "#/components/schemas/Category"
       tags:
         - Category
     post:
@@ -243,13 +238,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Category'
+              $ref: "#/components/schemas/Category"
       responses:
-        '201':
+        "201":
           description: Category created successfully
       tags:
         - Category
-
 
   /api/store/categories/{category_id}/:
     get:
@@ -263,12 +257,12 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Category'
+                $ref: "#/components/schemas/Category"
       tags:
         - Category
 
@@ -283,13 +277,13 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Successfully
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Response"
-        '400':
+        "400":
           description: Bad Request
           content:
             application/json:
@@ -298,8 +292,7 @@ paths:
       tags:
         - Category
 
-
-# Components        
+# Components
 
 components:
   schemas:
@@ -319,7 +312,7 @@ components:
     TokenResponse:
       $ref: "./schemas.yml#/TokenResponse"
 
-    # Request Schemas      
+    # Request Schemas
     LoginRequest:
       $ref: "./schemas.yml#/LoginRequest"
 
@@ -346,16 +339,13 @@ components:
       bearerFormat: JWT
 
   examples:
-
-    SuccessExample: 
+    SuccessExample:
       value:
         code: 200
-        message: Success 
+        message: Success
         data:
           - SKU: "SKU-SKU-SKU"
             slug: "5ZQowr7QAIiSJazMGloH4-lEOGmrbTIDfqy339GqD2PJ7p6AQYBbTQnX5i6Mk-mtXFt2wUaVn2u9fVtrwr"
             description: "string"
             price: -9999.98
             images: "string"
-
-  

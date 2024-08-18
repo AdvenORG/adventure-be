@@ -14,7 +14,7 @@ COPY . .
 RUN poetry install --no-interaction --no-ansi
 
 
-EXPOSE 8080
+EXPOSE 9090
 
 
 CMD  make start

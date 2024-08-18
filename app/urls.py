@@ -14,13 +14,7 @@ admin.site.index_title = "Admin"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path(
-        "accounts/oidc/keycloak/login/callback/",
-        views.keycloak_callback,
-        name="keycloak_callback",
-    ),
-    path("auth/intermediate/", views.intermediate, name="intermediate"),
-    path("profile/", views.profile, name="profile"),
+    path("accounts/token/", views.token, name="token"),
     path("accounts/", include("allauth.urls")),
     path("__debug__/", include("debug_toolbar.urls")),
     path(
